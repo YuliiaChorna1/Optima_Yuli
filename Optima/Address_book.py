@@ -73,7 +73,10 @@ class Phone(Field):
 
 
 class Birthday(Field):
-    def __init__(self, value: str) -> None:
+    def __init__(self, value: str) -> None:        
+        self.__year: int = None
+        self.__month: int = None
+        self.__day: int = None
         self.value = value
 
     @property
