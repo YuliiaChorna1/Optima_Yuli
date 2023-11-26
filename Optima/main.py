@@ -1,5 +1,3 @@
-import os
-import shlex
 from pathlib import Path
 from Optima import *
 

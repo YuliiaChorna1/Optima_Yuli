@@ -4,6 +4,7 @@ from pathlib import Path
 from abc import ABC, abstractmethod
 from Optima import *
 
+
 class BotUIBase(ABC):
 
     root_path: Path = None
@@ -310,9 +311,7 @@ class BotUIBase(ABC):
                 return func, args
         return BotUIBase.unknown_handler, shlex.split(text, posix=False)
 
-
-class BotCLI(BotUIBase):
-    
+class BotCLI(BotUIBase, metaclass=SingletonMeta):
     def __init__(self) -> None:
         self._initialize()
 

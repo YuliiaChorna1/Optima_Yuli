@@ -2,6 +2,7 @@ import re
 import pickle
 from pathlib import Path
 from collections import UserList
+from Optima import *
 
 
 class Note:
@@ -50,7 +51,7 @@ class Note:
         self.__parse_tags()
 
 
-class NotesList(UserList):
+class NotesList(UserList, metaclass=SingletonMeta):
     def __init__(self, root_path: Path) -> None:
         super().__init__()
         self.filename = str(root_path.joinpath("notes.bin"))
