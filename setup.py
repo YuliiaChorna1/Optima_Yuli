@@ -1,4 +1,11 @@
+import os
+import shutil
+from pathlib import Path
 from setuptools import setup, find_packages
+
+root_path = Path(os.path.expanduser("~")).joinpath("OPTIMA")
+if root_path.exists():
+    shutil.rmtree(str(root_path))
 
 setup(
     name="Optima",

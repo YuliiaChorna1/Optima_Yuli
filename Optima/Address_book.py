@@ -4,6 +4,7 @@ from pathlib import Path
 from datetime import date, timedelta
 from functools import reduce
 from collections import UserDict
+from Optima import *
 
 
 class DuplicatedPhoneError(Exception):
@@ -73,7 +74,10 @@ class Phone(Field):
 
 
 class Birthday(Field):
-    def __init__(self, value: str) -> None:
+    def __init__(self, value: str) -> None:        
+        self.__year: int = None
+        self.__month: int = None
+        self.__day: int = None
         self.value = value
 
     @property
@@ -174,7 +178,7 @@ class Record:
         self.email = Email(email)
         
 
-class AddressBook(UserDict):
+class AddressBook(UserDict, metaclass=SingletonMeta):
     def __init__(self, file_name):
         self.__file_name = file_name
         super().__init__()
