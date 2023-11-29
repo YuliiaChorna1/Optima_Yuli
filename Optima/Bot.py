@@ -7,13 +7,15 @@ from Optima import *
 
 class BotUIBase(ABC):
 
-    root_path: Path = None
-    records: AddressBook = None
-    notes_list: NotesList = None
-    help_txt: str = ""
+    def __init__(self) -> None:
+        self.root_path: Path = None
+        self.records: AddressBook = None
+        self.notes_list: NotesList = None
+        self.help_txt: str = ""
+        self.command_manager = None
 
     @abstractmethod
-    def _output(self, data) -> None:
+    def output(self, data) -> None:
         pass
 
     @abstractmethod
@@ -22,6 +24,10 @@ class BotUIBase(ABC):
 
     @abstractmethod
     def _initialize(self):
+        pass
+
+    @abstractmethod
+    def stop(self):
         pass
 
     def input_error(*expected_args):
@@ -58,7 +64,7 @@ class BotUIBase(ABC):
             result = func(self, *args)
             if not result:
                 return result
-            self._output(result)
+            self.output(result)
         return inner
 
     @output_result
@@ -314,41 +320,49 @@ class BotUIBase(ABC):
 class BotCLI(BotUIBase, metaclass=SingletonMeta):
     def __init__(self) -> None:
         self._initialize()
+        self.__run: bool
 
     def _initialize(self):
         self.root_path = Path(os.path.expanduser("~")).joinpath("OPTIMA")
         if not self.root_path.exists():
             self.root_path.mkdir()
 
-    def start(self):
+    def start(self):        
         self.notes_list = NotesList(self.root_path)        
         with AddressBook(str(self.root_path.joinpath("address_book.bin"))) as book:
+            self.__run = True
             os.system('cls' if os.name == 'nt' else 'clear')    
             print("\33[92m" + f"Wake up {os.getlogin().title()}...")
             print("The OPTIMA has you...")
             print("Follow the 'help' command.")
 
             self.records = book
-            while True:
+            self.command_manager = CommandManager(self, self.records, self.notes_list)
+            while self.__run:
                 user_input = input(">>> ")
 
+                # self.CommandManager.execute_command(user_input)
                 if user_input in self.EXIT_COMMANDS:
                     print("Good bye!")
-                    break
+                    self.stop()
+                    continue
                 
-                func, data = self.parser(user_input)
-                        
-                func(self, *data)
+                self.command_manager.execute_command(user_input)
+                # func, data = self.parser(user_input)
+                # func(self, *data)
 
             print ("\033[0m")
 
-    def _output(self, data) -> None:       
+    def output(self, data) -> None:       
         if isinstance(data, str):
             print(data)
         else:
             for i in data:                
                 print("\n".join(i))
                 input("Press enter to show more records")
+
+    def stop(self):
+        self.__run = False
     
 
 class BotWebUI(BotUIBase):
