@@ -218,7 +218,7 @@ class AddressBook(UserDict, metaclass=SingletonMeta):
         if exception_type:
             print(f"There was an error during execution: {exception_type.__name__} = {exception_value}")
             print("\033[0m")
-        return True
+        # return True
     
     def search_contacts(self, term):
         result = list(filter(lambda contact: term in contact.name.value.lower() or contact.has_phone(term), self.data.values()))

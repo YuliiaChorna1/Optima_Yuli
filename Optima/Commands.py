@@ -69,7 +69,8 @@ class Command(ABC):
     @abstractmethod
     def __init__(self, receiver, bot_instance) -> None:
         self._receiver = receiver
-        self.bot_instance = bot_instance 
+        self.bot_instance = bot_instance
+
     
     def execute(self) -> None:
         self.bot_instance.output(self._do_execute())
@@ -89,7 +90,7 @@ class GreetingCommand(Command):
     _command_name = "hello"
 
     def __init__(self, receiver, bot_instance, *args) -> None:
-        super().__init__(receiver, bot_instance)
+        super().__init__(receiver, bot_instance, *args)
         
 
     def _do_execute(self) -> str:
