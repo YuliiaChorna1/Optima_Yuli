@@ -1,3 +1,4 @@
+import colorama
 from pathlib import Path
 from Optima import *
 

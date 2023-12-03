@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "optima"
+version = "1.0.5"
+description = "Optima is a command-line assistant that allows you to store, edit, search, and manage notes and contacts."
+authors = ["Yuliia Chorna <yuli.chorna@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+colorama = "^0.4.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
